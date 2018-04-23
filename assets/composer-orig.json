@@ -1,0 +1,11 @@
+{
+    "config": {
+        "preferred-install": "assets",
+        "vendor-dir": "assets/vendor"
+    },
+    "require": {
+        "filp/whoops": "^2.1",
+        "kint-php/kint": "^2.2",
+        "delight-im/auth": "^8.0"
+    }
+}

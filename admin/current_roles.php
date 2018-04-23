@@ -2,26 +2,22 @@
 
 require_once( __DIR__ . '/../bootstrap.php' );
 require_once( __DIR__ . '/functions.php' );
-$croles = '';
+global $id;
 
-if ( isset( $_REQUEST ) ) {
-	$id = $_REQUEST[ 'id' ];
+$current_roles = isset( $_POST[ "current_roles" ] ) ? $_POST[ "current_roles" ] : $_POST[ "current_roles" ] = "SUBSCRIBER" ;
+
+//if ( isset( $_POST[ 'croles' ] ) && isset( $_POST[ 'id' ] ) ) {
+if ( isset( $_POST[ 'id' ] ) ) {
+	$id            = $_POST[ 'id' ];
+	$current_roles = $_POST[ 'current_roles' ];
+
 } else {
-	debug_to_console( 'danny' );
+	echo "both null in current_roles";
+	$id             = null;
+	$current_roles  = null;
 }
 
 $current_roles = $auth->admin()->getRolesForUserById( $id );
 
-debug_to_console( $current_roles );
-exit;
+echo json_encode( $current_roles );
 
-//$croles = '[';
-//foreach ( $current_roles as $key => $value ) {
-//	$croles .= "'" .  $value . "'" . "," ;
-//}
-//$croles .= ']';
-//
-//$c_roles = JSON.stringify( $croles );
-
-echo  $current_roles;
-return $current_roles;

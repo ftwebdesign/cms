@@ -2,6 +2,16 @@
 
 require_once( __DIR__ . "/head.php" );
 require_once( __DIR__ . '/../bootstrap.php' );
+require_once( __DIR__ . '/functions.php' );
+require_once( __DIR__ . '/../assets/vendor/autoload.php' );
+//// enable error reporting
+//\error_reporting(\E_ALL);
+//\ini_set('display_errors', 'stdout');
+//
+//// enable assertions
+//\ini_set('assert.active', 1);
+//@\ini_set('zend.assertions', 1);
+//\ini_set('assert.exception', 1);
 
 $list_of_roles = \Delight\Auth\Role::getNames();
 
@@ -65,6 +75,7 @@ $j = 0;
          </div>
          <span class="help-block" id="check-s"></span>
       </div>
+      <div id="dgs"></div>
    </div>
    <div class="form-footer">
       <div class="row">
@@ -79,38 +90,58 @@ $j = 0;
 
 <?php
 
-//d(require_once( __DIR__ . "/get-roles-ajax.php" )) ; // <!-- populate user role choices -->
-
-//d($auth->getRoles());
-
-//try {
-//	$auth->admin()->logInAsUserById(16);
-//}
-//catch (\Delight\Auth\UnknownIdException $e) {
-//	d('unknown ID');
-//}
-//catch (\Delight\Auth\EmailNotVerifiedException $e) {
-//	d('email address not verified');
-//}
-//d($auth->getRoles());
+////$auth->admin()->getRolesForUserById(1);
 //
-//try {
-//	$auth->admin()->logInAsUserById(17);
+////$current_roles = isset( $_POST[ "current_roles" ] ) ? $_POST[ "current_roles" ] : $_POST[ "current_roles" ] = array ("SUBSCRIBER") ;
+////if ( isset( $_POST[ 'id' ] ) ) {
+////	$id            = $_POST[ 'id' ];
+////	$current_roles = $_POST[ 'current_roles' ];
+////} else {
+////	echo "both null in current_roles";
+////}
+//
+//$id = 2;
+//
+//$current_roles = $auth->admin()->getRolesForUserById( $id );
+//d( $current_roles );
+////echo '\Delight\Auth\Role::' . 'EDITOR';
+//foreach (  $current_roles  as $key => $value ) {
+//
+//	if ( array_key_exists( $key, $ROLES ) ) {
+//		//echo $index . "\n";
+//		////exit;
+//
+//		//$file = 'roles.txt';
+//		//// Open the file to get existing content
+//		//$current = file_get_contents( $file );
+//		//$current .= '$auth->admin()->removeRoleForUserById( ' . $id . ', ' .  $value . ' );'. "\n";
+//		//// Write the contents back to the file
+//		//file_put_contents( $file, $current );
+//
+//		try {
+//		  $index = '\Delight\Auth\Role::' . $value;
+//		  $auth->admin()->removeRoleForUserById( $id, $index );
+//         echo "done<br>";
+//	  } catch ( \Delight\Auth\UnknownIdException $e ) {
+//			echo "unknown user ID" . "<br>";
+//		}
+//
+//	   //$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::ADMIN );
+//	   //$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::DEVELOPER );
+//	   //$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::EDITOR );
+//	   //$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::SUPER_ADMIN );
+//
+//	}
 //}
-//catch (\Delight\Auth\UnknownIdException $e) {
-//	d('unknown ID');
+//reset( $ROLES );
+//
+//function my_role( $id, $value ) {
+//
+//   return( '$auth->admin()->removeRoleForUserById( ' . $id . ", \Delight\Auth\Role::" . $value . " );");
 //}
-//catch (\Delight\Auth\EmailNotVerifiedException $e) {
-//	d('email address not verified');
-//}
-//d($auth->getRoles());
 
 
 
 
-
-
-//$auth->admin()->getRolesForUserById(1);
-
-require_once( __DIR__ . "/footer.php" ); ?>
+require_once( __DIR__ . "/footer.php" );
 

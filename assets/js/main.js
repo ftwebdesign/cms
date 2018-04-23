@@ -5,144 +5,162 @@
    const $js_role = $( '#js_roles' );
    var $jsUser;
    var $jsRole;
+   var $current_roles;
+   var $current_auth;
+   var $new_roles;
+   var id;
+
+   var my_global           = new Object();
+   my_global.id            = -1;
+   my_global.current_roles = [ "SUBSCRIBER" ];
 
    // get user to work add / remove rules
    //
    $( document ).ready( function () {
+
       $( '.js_users' ).select2();
       $( '.js-multiple-roles' ).select2();
-      var $current_roles;
-      var $new_roles;
 
       // get existing roles to be used later
       $js_user.on( "change", function ( e ) {
-         var data = $( this ).val();
-         if ( data === 0 ) {
+         id = $( this ).val();
+
+         if ( id === 0 ) {
             alert( "nothing selected" );
             return null;
          } else {
-            $jsUser = data;
+            $jsUser = id;
 
-            $.ajax({
-               url: "http://cms.local/admin/current_roles.php",
-               data: "id=" + $jsUser,
-               success: function ( response, status, http ) {
-                  $current_roles = response;
-                  //alert( $current_roles );
-                  //console.log( $current_roles );
+            var vars           = new Object();
+            vars.id            = $jsUser = id;
+            vars.current_roles = $current_roles;
+
+            my_global.id            = $jsUser;
+            my_global.current_roles = $current_roles;
+
+            $.ajax( {
+               url:      "current_roles.php",
+               data:     vars,
+               type:     "POST",                                 // GET, POST
+               dataType: "text",
+
+               success: function ( data, status, xhr ) {
+                  my_global.current_roles = data;
+                  $current_roles = data;
+                  $jsUser        = vars.id;
+
+                  console.log( $current_roles );
+                  console.log( data );
+                  console.log( status );
+                  console.log( xhr );
+               },
+               error:   function ( data, status, xhr ) {
+                  alert( "Some Error Occurred : " + error );
+                  console.log( data );
+                  console.log( status );
+                  console.log( xhr );
                }
-            });
+            } );
+//======================================================================
+
+            var varz           = new Object();
+            varz.id            = $jsUser = id;
+            varz.current_roles = $new_roles;
 
             // after user is selected we pass id of the user
             $.ajax( {
 
-               url:      "http://cms.local/admin/roles.php",    // (default: The current page)
-               type:     "GET",                                 // GET, POST
-               data:     "id=" + $jsUser,                       // PlainObject or String or Array
-               dataType: "text",                                // xml, json, script, or html
+               url:      "roles.php",    // (default: The current page)
+               type:     "POST",                // GET, POST
+               data:     varz,                  // PlainObject or String or Array
+               dataType: "text",                // xml, json, script, or html
 
                // todo creat $new_roles which are the changes made
-               success: function ( response, status, http ) {
-                  //console.log( response );
-                  $new_roles = response;
-                  //alert( $new_roles );
+               success: function ( data, status, xhr ) {
+                  $new_roles = data;
+                  //console.log( data );
+                  //console.log( status );
+                  //console.log( xhr );
                   $( '#js_roles' ).html( $new_roles );
                },
-               error:   function ( http, status, error ) {
+               error:   function ( data, status, xhr ) {
+                  console.log( data );
+                  console.log( status );
+                  console.log( xhr );
                   alert( "Some Error Occurred : " + error );
                }
             } );
          }
 
       } );
-
+//================================================================================
       $( '#btn-roles' ).click( function ( event ) {
 
-         // build an array to make it easier to pass via ajax
-         var $current_array = $current_roles.split(",");
+         //var varsz           = new Object();
+         //varsz.id            = $jsUser;
+         //varsz.current_roles = $current_roles;
+         //
+         //var my_global  = new Object();
+         $jsUser        = my_global.id;
+         $current_roles = my_global.current_roles;
 
          // todo after user is selected and button is pushed we pass id of the user & and current
          // todo selection of roles in database via ajax
          $.ajax( {
 
-            url:      "http://cms.local/admin/remove-roles.php",      // (default: The current page)
-            type:     "GET",
-            data: { id:      $jsUser,
-                    croles:  $current_array
-               },      // PlainObject or String or Array
-            dataType: "text",                                        // xml, json, script, or html
+            url:      "remove-roles.php",      // (default: The current page)
+            //url:    "user-roles.php",      // (default: The current page)
+            type:     "POST",
+            data:     my_global,
+            dataType: "text",                  // xml, json, script, or html
 
-            success: function ( response, status, http ) {
-               //alert( data );
-               console.log( $jsUser );
-               console.log( $current_array );
-               console.log( response );
-               console.log( status );
-               console.log( http );
-               alert( $current_array );
-               ////$( '#js_roles' ).html( response );
+            success: function ( data, status, xhr ) {
+
+               $jsUser        =  my_global.id;
+               $current_roles =  my_global.current_roles;
+               data           =  my_global.current_roles;
+
+               console.log( $current_roles );
+               //$current_roles  = data;
+               //$jsUser         = id;
+               //$current_roles = current_roles;
+
+               //$current_roles = Object.keys($current_roles).map(function(key) {
+               //   return [Number( key ), $current_roles[key]];
+               //});
+
+               //alert( "jsUser: "        + $jsUser  );
+               //alert( "current_roles: " +  $current_roles );
+
+               //$.each( JSON.parse( my_global.current_roles ), function( key, value ) {
+               //   alert( key + ": " + value );
+               //});
+
+               //console.log( JSON.parse( my_global.current_roles ) );
+               //console.log( status );
+               //console.log( xhr );
             },
-            error:   function ( http, status, error ) {
+            error:   function ( data, status, xhr ) {
                alert( "Some Error Occurred : " + error );
+               console.log( data );
+               console.log( status );
+               console.log( xhr );
             }
          } );
-
-         //
-         //
+//====================================================================
          // todo add back selected roles
          //$('#js_roles').on('select2:select', function (e) {
          //   // Do something
          //});
 
+      } );
 
-
-      });
-      //}
-
-//} );
       /*
       1 click on email <= ajax to get roles <= trigger database read to get roles
       2 add role => update database with new role
       3 delete role => update database to remove role
 
-
-
-
-
-
-
-
        */
-
-      //$( document ).ready( function () {
-      //$js_role.on( "select2:select", function ( e ) {
-      //   if ( data === 0 ) {
-      //      //alert("nothing selected");
-      //      return null;
-      //   } else {
-      //      var data = e.params.data;
-      //      //$js_role.val(['1', '2']);
-      //      //$js_role.trigger('change'); // Notify any JS components that the value changed
-      //      $jsRole = data;
-      //      //console.log( JSON.stringify($jsRole) );
-      //      //console.log( $js_role.val() );
-      //
-      //      //alert( JSON.stringify(data) );
-      //      //try {
-      //      //$auth->admin()->addRoleForUserById($jsUser, data);
-      //      //}
-      //      //catch (\Delight\Auth\UnknownIdException $e) {
-      //      //    //unknown user ID
-      //      //}
-      //   }
-      //} );
-
-      //// Set up the Select2 control
-      //$js_role.select2({
-      //   ajax: {
-      //      url: '/api/user'
-      //   }
-      //});
 
    } );
 

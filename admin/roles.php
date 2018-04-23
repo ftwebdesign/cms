@@ -2,46 +2,36 @@
 
 require_once( __DIR__ . '/../bootstrap.php' );
 require_once( __DIR__ . '/functions.php' );
+global $new_roles;
+global $id;
 
-if ( isset( $_REQUEST ) ) {
-	//debug_to_console( $_REQUEST );
-	$id = $_GET[ 'id' ];
-	//debug_to_console( $id );
+// Make sure both have value or it will not work
+$new_roles = isset( $_POST[ "new_roles" ] ) ? $_POST[ "new_roles" ] : $_POST[ "new_roles" ] = "SUBSCRIBER" ;
+
+if ( isset( $_POST[ 'id' ] ) ) {
+	$id        = $_POST[ 'id' ];
+	$new_roles = $_POST[ 'new_roles' ];
 } else {
-	debug_to_console( 'danny' );
+	$new_roles = null;
 }
 
 function buildRoles( \Delight\Auth\Auth $auth, $id ) {
-	$list_of_roles = \Delight\Auth\Role::getNames();
+	$new_roles = \Delight\Auth\Role::getMap();
 
 	$rolesJson = '';
-
-	for ( $k = 0; $k < count( $list_of_roles ); $k ++ ) {
+	foreach ( $new_roles as $key => $value ) {
 
 		$theRole = $auth->admin()->getRolesForUserById( $id );
-		//debug_to_console( $theRole );
-		//debug_to_console( $list_of_roles[ $k ] );
-		//d( $theRole );
-		//exit;
 
-		if ( in_array( $list_of_roles[ $k ], $theRole ) === true ) {
-			$rolesJson .= "    <option selected='selected' value=$k >" . $list_of_roles[ $k ] . "</option>";
+		if ( in_array( $new_roles[ $key ], $theRole ) === true ) {
+			$rolesJson .= "    <option selected='selected' value=$key >" . $value . "</option>";
 
 		} else {
-			$rolesJson .= "    <option value=$k>" . $list_of_roles[ $k ] . "</option>";
+			$rolesJson .= "    <option value=$key>" . $value . "</option>";
 		}
 	}
 
-	echo( $rolesJson );
-	//$( 'js_roles' ).load('user-roles.php');
-	return( $rolesJson );
+	echo   $rolesJson ;
 }
 
 buildRoles( $auth, $id );
-
-//$roles = [];
-//$roles = $auth->admin()->getRolesForUserById( $id );
-//
-//foreach ( $roles as $key => $value ) {
-//	echo( "    <option value=$key selected='selected'>" . $value . "</option>" );
-//}

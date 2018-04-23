@@ -25,7 +25,7 @@
 
 \header('Content-type: text/html; charset=utf-8');
 
-require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 $result = \processRequestData($auth);
 
@@ -424,6 +424,8 @@ function processRequestData(\Delight\Auth\Auth $auth) {
 			else if ($_POST['action'] === 'admin.addRole') {
 				if (isset($_POST['role'])) {
 					if (isset($_POST['id'])) {
+						var_dump( 'role ' . $_POST['role'] );
+						d( 'role: ' . $_POST['role']);
 						try {
 							$auth->admin()->addRoleForUserById($_POST['id'], $_POST['role']);
 						}
@@ -465,7 +467,11 @@ function processRequestData(\Delight\Auth\Auth $auth) {
 					if (isset($_POST['id'])) {
 						try {
 							$auth->admin()->removeRoleForUserById($_POST['id'], $_POST['role']);
+							d( $_POST['id'], $_POST['role'] );
+							var_dump( $_POST['id'], $_POST['role'] );
 						}
+
+
 						catch (\Delight\Auth\UnknownIdException $e) {
 							return 'unknown ID';
 						}

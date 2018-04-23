@@ -1,0 +1,27 @@
+key:	1		value:	ADMIN
+$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::ADMIN );
+Array
+(
+    [1] => ADMIN
+    [256] => DEVELOPER
+    [262144] => SUPER_ADMIN
+)
+is array
+key:	256		value:	DEVELOPER
+$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::DEVELOPER );
+Array
+(
+    [1] => ADMIN
+    [256] => DEVELOPER
+    [262144] => SUPER_ADMIN
+)
+is array
+key:	262144		value:	SUPER_ADMIN
+$auth->admin()->removeRoleForUserById( 2, \Delight\Auth\Role::SUPER_ADMIN );
+Array
+(
+    [1] => ADMIN
+    [256] => DEVELOPER
+    [262144] => SUPER_ADMIN
+)
+is array

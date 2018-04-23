@@ -257,3 +257,39 @@ function debug_to_console( $data ) {
 
 	echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
 }
+
+function debug_to_alert( $data ) {
+	$output = $data;
+	if ( is_array( $output ) ) {
+		$output = print_r( $output, true);
+	}
+
+	echo "<script>alert( 'Debug Objects: " . $output . "' );</script>";
+}
+
+$ROLES = \Delight\Auth\Role::getMap();
+
+//$ROLES = array (
+//   "ADMIN"            =>     "\Delight\Auth\Role::ADMIN",
+//   "AUTHOR"           =>     "\Delight\Auth\Role::AUTHOR",
+//   "COLLABORATOR"     =>     "\Delight\Auth\Role::COLLABORATOR",
+//   "CONSULTANT"       =>     "\Delight\Auth\Role::CONSULTANT",
+//   "CONSUMER"         =>     "\Delight\Auth\Role::CONSUMER",
+//   "CONTRIBUTOR"      =>     "\Delight\Auth\Role::CONTRIBUTOR",
+//   "COORDINATOR"      =>     "\Delight\Auth\Role::COORDINATOR",
+//   "CREATOR"          =>     "\Delight\Auth\Role::CREATOR",
+//   "DEVELOPER"        =>     "\Delight\Auth\Role::DEVELOPER",
+//   "DIRECTOR"         =>     "\Delight\Auth\Role::DIRECTOR",
+//   "EDITOR"           =>     "\Delight\Auth\Role::EDITOR",
+//   "EMPLOYEE"         =>     "\Delight\Auth\Role::EMPLOYEE",
+//   "MAINTAINER"       =>      "\Delight\Auth\Role::MAINTAINER",
+//   "MANAGER"          =>      "\Delight\Auth\Role::MANAGER",
+//   "MODERATOR"        =>     "\Delight\Auth\Role::MODERATOR",
+//   "PUBLISHER"        =>     "\Delight\Auth\Role::PUBLISHER",
+//   "REVIEWER"         =>     "\Delight\Auth\Role::REVIEWER",
+//   "SUBSCRIBER"       =>      "\Delight\Auth\Role::SUBSCRIBER",
+//   "SUPER_ADMIN"      =>      "\Delight\Auth\Role::SUPER_ADMIN",
+//   "SUPER_EDITOR"     =>      "\Delight\Auth\Role::SUPER_EDITOR",
+//   "SUPER_MODERATOR"  =>      "\Delight\Auth\Role::SUPER_MODERATOR",
+//   "TRANSLATOR"       =>      "\Delight\Auth\Role::TRANSLATOR",
+//);
